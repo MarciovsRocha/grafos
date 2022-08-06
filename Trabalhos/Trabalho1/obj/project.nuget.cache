@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "dk6RDENF7a4RJUBtyyVk6+W+uvRg2imjY6JgVBSb+ZCZk9otPDBhQ+G8glNEiG1ZqmD0CmF+7RvOtkSer8eC7Q==",
+  "success": true,
+  "projectFilePath": "/storage/faculdade/4periodo/grafos/Trabalhos/Trabalho1/Trabalho1.csproj",
+  "expectedPackageFiles": [
+    "/home/marcio/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.6/microsoft.aspnetcore.app.ref.6.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}

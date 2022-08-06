@@ -1,0 +1,15 @@
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/Trabalhos
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/Trabalhos.deps.json
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/Trabalhos.runtimeconfig.json
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/Trabalhos.dll
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/ref/Trabalhos.dll
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/bin/Debug/net6.0/Trabalhos.pdb
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.csproj.AssemblyReference.cache
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.GeneratedMSBuildEditorConfig.editorconfig
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.AssemblyInfoInputs.cache
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.AssemblyInfo.cs
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.csproj.CoreCompileInputs.cache
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.dll
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/ref/Trabalhos.dll
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.pdb
+/storage/faculdade/4periodo/grafos/Trabalhos/Trabalhos/obj/Debug/net6.0/Trabalhos.genruntimeconfig.cache
