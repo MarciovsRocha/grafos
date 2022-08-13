@@ -17,12 +17,12 @@ class Graph:
                 self.MatrizAdjacencia[index] += [None for k in range(X-self.ordem)]
                 index += 1
             self.MatrizAdjacencia += [[None for i in range(X)] for k in range(X-self.ordem)]
-        self.ordem = X
+            self.ordem = X
         return 0
 
     def adiciona_aresta(self, A, B, weight):
         self.verifica_len(A, B)
-        self.MatrizAdjacencia[A][B] = weight
+        self.MatrizAdjacencia[A-1][B-1] = weight
         self.tamanho += 1
         return 0
 
