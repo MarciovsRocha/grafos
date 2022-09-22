@@ -1,4 +1,5 @@
 .idea/
 *~*
 trabalhos_py/tde1/__pycache__/
+*__pycache/
 
