@@ -101,9 +101,10 @@ print('{} Busca em largura(danielle.marcinkowski@enron.com -> andrew.wu@enron.co
 ))
 
 # Nós anlcançaveis
-print('{} Busca de nós alcancaveis a uma distancia D({}):\n'.format(Q, d))
+print('{}Busca de nós alcancaveis a uma distancia D({}):\nmostra somente os 3 primeiros elementos da lissta + último\n\n'.format(Q, d))
 busca = G.reachable_nodes('danielle.marcinkowski@enron.com', d)
 for jump in busca:
-    print('Nós com total de {} salto: '.format(jump), end='')
-    for node in busca[jump]:
-        print('{}', end='; '.format(node))
+    print('  - Nós com total de {} salto(s): '.format(jump), end='')
+    for node in busca[jump][:3]:
+        print('{}'.format(node), end='; ')
+    print('...; {}\n'.format(busca[jump][len(busca[jump])-1]))

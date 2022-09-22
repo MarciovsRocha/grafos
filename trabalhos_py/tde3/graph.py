@@ -243,41 +243,23 @@ class Graph:
         return visited_nodes, (time.time() - start)
 
     # -----------------------------------------------------------
-    # verifica se o grafo é euleriano
-    # return: bool (True | False)
+    # verifica todos os nodes alcancaveis dentro do limite
+    # return: dict {jump: list}
     def reachable_nodes(self, A: str = '', n: int = 1):
-        # cria a lista de nodes alcancaveis de acordo
-        # com o numero especificado
-        visited_nodes = [A]
+        visited_nodes = []
         reachable = {'1': [k for k in self.AdjacencyList[A]]}
-        jump = 2
-        while n > jump:
-            if str(jump-1) in reachable:
-                for node in reachable[str(jump-1)]:
+        for i in range(2, (n+1)):
+            stack = str(i-1)
+            if stack in reachable:
+                for node in reachable[stack]:
                     if node not in visited_nodes:
-                        # update visited_nodes
                         visited_nodes.append(node)
                         r = [k for k in self.AdjacencyList[node]]
-                        # clear all visited_nodes
                         for n in r:
                             if n in visited_nodes:
                                 r.remove(n)
-                        if str(jump) not in reachable:
-                            reachable[str(jump)] = r
+                        if str(i) not in reachable:
+                            reachable[str(i)] = r
                         else:
-                            reachable[str(jump)] += r
-            jump = jump+1
+                            reachable[str(i)] += r
         return reachable
-
-"""
-    def grau(self, A: str):
-        if A not in self.AdjacencyList:
-            print('Não é verificar o grau do vértice \'{}\' pois este vértice não pertence ao grafo.'.format(A))
-            return -1
-        outdegree = len(self.AdjacencyList[A])
-        indegree = 0
-        for key in self.AdjacencyList:
-            if A in self.AdjacencyList[key]:
-                indegree += 1
-        return indegree+outdegree
-"""
