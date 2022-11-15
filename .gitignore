@@ -5,3 +5,5 @@ trabalhos_py/tde3/__pycache__/
 TDE4/
 trabalhos_py/codigos_aula/grafo_aleatorio.py
 trabalhos_py/cycle_detect/
+*.pdf
+**__pycache__**
