@@ -9,8 +9,9 @@ from grafo_aleatorio import Grafo
 
 
 G = Grafo(
-    n_nodes=100,
-    directional=True
+    n_nodes=500
+    , directional=True
+    , edges=3
 )
 print(G)
 
