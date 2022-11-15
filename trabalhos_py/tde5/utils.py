@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # ----------------------------------------------------------
 # created by: dev.marcio.rocha@gmail.com
 # date: 15-11-2022
