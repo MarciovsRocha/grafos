@@ -4,49 +4,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from random import randint, random
+from random import random
 from bst import BinarySearchTree, Node
 from pajek_tools import PajekWriter
-
+from utils import *
 
 # ---------------------------------------------------------
 # constants section
-MAX_W = 100
-MIN_W = 1
 
-# specified int the document
 MIN_NODES = 10000
 MIN_EDGES = 15000
-
-USERNAME_FILE = 'Users.txt'
-
-
-# ---------------------------------------------------------
-# clean passed string removing break lines and spaces
-def clean_string(string: str):
-    cleaned_string = string.replace('\n', '')
-    return cleaned_string
-
-
-# ---------------------------------------------------------
-# sort new weight
-def new_weight(): return randint(MIN_W, MAX_W)
-
-
-# ---------------------------------------------------------
-# generator for names in Users.txt
-NAME_GENERATOR = (clean_string(name) for name in open(USERNAME_FILE))
-
-
-# ---------------------------------------------------------
-# based on Users file generates names
-def new_name(): return next(NAME_GENERATOR)
-
-
-# ---------------------------------------------------------
-# min_max scaler
-# this will return a value between 0 and 1
-def min_max(MIN, MAX, x): return (x - MIN) / (MAX - MIN)
 
 
 # ---------------------------------------------------------
@@ -77,7 +44,7 @@ class Grafo:
 
     # ---------------------------------------------------------
     # constructor
-    def __init__(self , n_nodes: int = MIN_NODES , directional: bool = True):
+    def __init__(self , n_nodes: int = MIN_NODES , directional: bool = True, edges: int = 5):
         self.__directional = directional
         self.__adjacency_list = {}
         # this will create a graph with n_nodes
@@ -87,7 +54,7 @@ class Grafo:
         self.__min_degree = 0
         self.__create_initial_graph(initial_nodes)
         # this function will create a scale-free graph
-        self.__finish_graph(n_nodes-initial_nodes)
+        self.__finish_graph(n_nodes=n_nodes-initial_nodes, k=edges)
 
     # ---------------------------------------------------------
     # custom printable object
@@ -105,8 +72,7 @@ class Grafo:
     # ---------------------------------------------------------
     # return number of indegree of specified node
     def node_indegree(self, A):
-        if A not in self.__adjacency_list:
-            raise Exception(f'Node "{A}" doesnt exist in graph.')
+        self.__valida_nodes(A)
         indegree = 0
         for node in self.__adjacency_list:
             if (node != A) and (A in self.__adjacency_list[node]):
@@ -154,10 +120,7 @@ class Grafo:
     # insert new edge between two nodes
     # if already exists overwrite the old value with the new value
     def new_edge(self, A, B, weight):
-        if A not in self.__adjacency_list:
-            raise Exception(f'Node "{A}" doesnt exists in graph.')
-        if B not in self.__adjacency_list:
-            raise Exception(f'Node "{A}" doesnt exists in graph.')
+        self.__valida_nodes(nodes=[A, B])
         if A == B:
             raise Exception(f'Nodes "{A}" and "{B}" are the same.')
         if self.__directional:
@@ -230,6 +193,15 @@ class Grafo:
                              weighted=True)
         writer.write("output.net")
 
+    # ---------------------------------------------------------
+    # verify if all passed nodes exists in graph
+    def __valida_nodes(self, nodes):
+        if list == type(nodes):
+            if not exists_nodes(nodes, [A for A in self.__adjacency_list]):
+                raise Exception(f'One or more nodes doesnt exists in graph.')
+        if str == type(nodes):
+            if not exists_nodes([nodes], [A for A in self.__adjacency_list]):
+                raise Exception(f'Node "{A}" doesnt exists in graph.')
 
 G = Grafo(
     n_nodes=100,
