@@ -3,8 +3,11 @@
 # import section
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from random import randint, random
 from bst import BinarySearchTree, Node
+from pajek_tools import PajekWriter
+
 
 # ---------------------------------------------------------
 # constants section
@@ -168,12 +171,31 @@ class Grafo:
             bst.add_node(Node(value=self.node_degree(node), name=node))
         return [f'{node.name}: {node.value}' for node in bst.list_higher_nodes(n=n)]
 
+    # ---------------------------------------------------------
+    # Exports the graph to Pajek file format
+    def export_to_pajek(self):
+        data = []
+        for A in self.__adjacency_list:
+            for B in self.__adjacency_list[A]:
+                if A != B:
+                    data.append([A, B, self.__adjacency_list[A][B]])
+
+        df = pd.DataFrame(data, columns=["source", "target", "weight"])
+        writer = PajekWriter(df,
+                             directed=True,
+                             citing_colname="source",
+                             cited_colname="target",
+                             weighted=True)
+        writer.write("output.net")
+
 
 G = Grafo(
-    n_nodes=1000,
+    n_nodes=100,
     directional=True
 )
 print(G)
+
+G.export_to_pajek()
 
 graus = G.get_all_degrees(as_list=True)
 for obj in G.get_highest_nodes():
