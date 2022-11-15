@@ -5,6 +5,7 @@
 # ----------------------------------------------------------
 from random import randint
 
+
 # ---------------------------------------------------------
 # clean passed string removing break lines and spaces
 def clean_string(string: str):
