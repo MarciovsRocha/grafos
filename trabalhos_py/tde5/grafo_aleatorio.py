@@ -162,7 +162,10 @@ class Grafo:
         else:
             self.__adjacency_list[A][B] = weight
             self.__adjacency_list[B][A] = weight
-
+        # adjust variables MIN MAX
+        degrees_list = self.get_all_degrees(as_list=True)
+        self.__max_degree = max(degrees_list)
+        self.__min_degree = min(degrees_list)
         return self
 
     # ---------------------------------------------------------
@@ -177,10 +180,6 @@ class Grafo:
             for B in self.__adjacency_list:
                 if (A != B) and (random() > self.__connection_prob):
                     self.new_edge(A, B, new_weight())
-        # adjust variables MIN MAX
-        degrees_list = self.get_all_degrees(as_list=True)
-        self.__max_degree = max(degrees_list)
-        self.__min_degree = min(degrees_list)
 
     # ---------------------------------------------------------
     # creates an initial graph with 1k nodes and max 150 edges per node
