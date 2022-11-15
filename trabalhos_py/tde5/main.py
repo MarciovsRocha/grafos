@@ -8,11 +8,9 @@ import matplotlib.pyplot as plt
 from grafo_aleatorio import Grafo
 
 
-G = Grafo(
-    n_nodes=500
-    , directional=True
-    , edges=3
-)
+G = Grafo(directional=True)
+#G.create_scale_free(n_nodes=500, n_edges=3)
+#G.create_gaussian_distribution(n_nodes=500)
 print(G)
 
 G.export_to_pajek()
