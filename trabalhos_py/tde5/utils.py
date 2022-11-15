@@ -31,12 +31,12 @@ def new_name(): return next(NAME_GENERATOR)
 # ---------------------------------------------------------
 # min_max scaler
 # this will return a value between 0 and 1
-def min_max(MIN, MAX, x): return (x - MIN) / (MAX - MIN)
+def min_max(MIN: float, MAX: float, x: float): return (x - MIN) / (MAX - MIN)
 
 
 # ---------------------------------------------------------
 # verify if passed nodes exists in nodes list
-def exists_nodes(verify_nodes: list = [], nodes_list: list = []):
+def exists_nodes(verify_nodes: list, nodes_list: list):
     exists = True
     for node in verify_nodes:
         exists = exists and node in nodes_list
