@@ -8,3 +8,4 @@ trabalhos_py/cycle_detect/
 *.pdf
 **__pycache__**
 **bkp**
+*.net
