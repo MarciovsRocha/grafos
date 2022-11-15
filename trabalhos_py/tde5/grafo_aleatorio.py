@@ -19,7 +19,7 @@ USERNAME_FILE = 'Users.txt'
 
 
 # ---------------------------------------------------------
-# clean passed string removind break lines and spaces
+# clean passed string removing break lines and spaces
 def clean_string(string: str):
     cleaned_string = string.replace('\n', '')
     return cleaned_string
@@ -41,13 +41,19 @@ def new_name(): return next(NAME_GENERATOR)
 
 
 # ---------------------------------------------------------
+# min_max scaler
+# this will return a value between 0 and 1
+def min_max(MIN, MAX, x): return (x - MIN) / (MAX - MIN)
+
+
+# ---------------------------------------------------------
 # graph class
 # USE FLUENT NOTATION
 class Grafo:
     """
         . : G R A P H : .
 
-        * directional: flag that indicates if graph will be diretional or undirectional
+        * directional: flag that indicates if graph will be directional or undirectional
 
         * weighted: flag that indicates if graph will have weights or not
 
@@ -60,7 +66,11 @@ class Grafo:
     # private attributes
     __directional: bool
     __adjacency_list: dict
-    __connection_prob = 2/3  # this prob value will generate nodes with more edges than others
+    # this prob value will generate nodes with more edges than others
+    # and n-edges will follow a gaussian distribution
+    __connection_prob = 2/3
+    __max_degree: int
+    __min_degree: int
 
     # ---------------------------------------------------------
     # constructor
@@ -69,7 +79,12 @@ class Grafo:
         self.__adjacency_list = {}
         # this will create a graph with n_nodes
         # and normal distribution for edges
-        self.__create_initial_graph(n_nodes)
+        initial_nodes = int(n_nodes/3)
+        self.__max_degree = 0
+        self.__min_degree = 0
+        self.__create_initial_graph(initial_nodes)
+        # this function will create a scale-free graph
+        self.__finish_graph(n_nodes-initial_nodes)
 
     # ---------------------------------------------------------
     # custom printable object
@@ -78,8 +93,10 @@ class Grafo:
 
     # ---------------------------------------------------------
     # insert new node into graph with available name in Users.txt
-    def new_node(self):
-        node_name = new_name()
+    def new_node(self, node_name: str = ''):
+        node_name = new_name() if '' == node_name else node_name
+        if node_name in self.__adjacency_list:
+            raise Exception(f'The node "{node_name}" already exists in graph.')
         self.__adjacency_list[node_name] = {}
 
     # ---------------------------------------------------------
@@ -145,6 +162,7 @@ class Grafo:
         else:
             self.__adjacency_list[A][B] = weight
             self.__adjacency_list[B][A] = weight
+
         return self
 
     # ---------------------------------------------------------
@@ -159,9 +177,34 @@ class Grafo:
             for B in self.__adjacency_list:
                 if (A != B) and (random() > self.__connection_prob):
                     self.new_edge(A, B, new_weight())
+        # adjust variables MIN MAX
+        degrees_list = self.get_all_degrees(as_list=True)
+        self.__max_degree = max(degrees_list)
+        self.__min_degree = min(degrees_list)
 
     # ---------------------------------------------------------
     # creates an initial graph with 1k nodes and max 150 edges per node
+    # n_nodes: number of nodes to be added
+    # k: number of edges for each new node
+    def __finish_graph(self , n_nodes: int, k: int = 3):
+        new_nodes = []
+        # creates initial nodes
+        while n_nodes > len(new_nodes):
+            new_nodes.append(new_name())
+            self.new_node(new_nodes[len(new_nodes)-1])
+        # create k-edges for each new_node
+        for A in new_nodes:
+            while k > self.node_degree(A):
+                for B in self.__adjacency_list:
+                    # (nodes not equal)(rand * B_degree > prob)
+                    if A != B:
+                        b_conn_prob = random()*min_max(MIN=self.__min_degree, MAX=self.__max_degree, x=self.node_degree(B))
+                        if b_conn_prob > self.__connection_prob:
+                            self.new_edge(A , B , new_weight())
+
+    # ---------------------------------------------------------
+    # creates an initial graph with 1k nodes and max 150 edges per node
+    # ONLY FOR DEBUGGING
     def get_highest_nodes(self, n: int = 10):
         bst = BinarySearchTree()
         for node in self.__adjacency_list:
@@ -170,7 +213,7 @@ class Grafo:
 
 
 G = Grafo(
-    n_nodes=1000,
+    n_nodes=500,
     directional=True
 )
 print(G)
@@ -180,7 +223,7 @@ for obj in G.get_highest_nodes():
     print(obj)
 
 plt.hist(graus, edgecolor='black', alpha=.4)
-plt.plot([np.mean(graus), np.mean(graus)],[0,1500], r'--', label=f'Grau médio = {np.mean(graus)}')
+plt.plot([np.mean(graus), np.mean(graus)], [0, 1500], r'--', label=f'Grau médio = {np.mean(graus)}')
 plt.xlabel("Graus")
 plt.ylabel("Frequência")
 plt.legend()
