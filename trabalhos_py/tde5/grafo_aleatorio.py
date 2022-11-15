@@ -198,4 +198,4 @@ class Grafo:
                 raise Exception(f'One or more nodes doesnt exists in graph.')
         if str == type(nodes):
             if not exists_nodes([nodes], [A for A in self.__adjacency_list]):
-                raise Exception(f'Node "{A}" doesnt exists in graph.')
+                raise Exception(f'Node "{nodes}" doesnt exists in graph.')
