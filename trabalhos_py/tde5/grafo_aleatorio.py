@@ -242,8 +242,7 @@ class Grafo:
         return self
 
     # ---------------------------------------------------------
-    # returns number of componets of graph
+    # returns number of components of graph
     # size + order (n_edges + n_nodes)
-    def get_componets(self):
+    def get_components(self):
         return self.size + self.order
-
