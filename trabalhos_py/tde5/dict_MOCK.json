@@ -1,0 +1,12 @@
+{
+  "Arthuro_anjo": {"Ananias5Joao": 85, "Almeid_A_": 11, "AparecidaResen2": 27},
+  "AnotherReserve": {"Alexand31006018": 16, "AdvBOLSOMINION": 91, "AndreiaAC72": 100, "AparecidaResen2": 4},
+  "AlineLyn": {"AnotherReserve": 85, "Ananias5Joao": 62},
+  "Alexand31006018": {},
+  "Ananias5Joao": {},
+  "Almeid_A_": {"AlineLyn": 83, "AparecidaResen2": 11},
+  "AdvBOLSOMINION": {"Arthuro_anjo": 53, "AlineLyn": 55, "Alexand31006018": 7, "Ananias5Joao": 86, "AndrausFred": 57},
+  "AndreiaAC72": {"Ananias5Joao": 84, "AdvBOLSOMINION": 68, "AndrausFred": 34},
+  "AparecidaResen2": {"AnotherReserve": 77},
+  "AndrausFred": {"AnotherReserve": 29, "Ananias5Joao": 22, "AparecidaResen2": 81}
+}
