@@ -156,6 +156,26 @@ class Grafo:
         writer.write("output.net")
         return self
 
+    def import_from_pajek(self, path):
+        graph = {}
+        name_index = [0]
+        nodes_remaining = -1
+        file = open(path, 'r')
+        for data in self.clean_generator(file):
+            for row in data:
+                if row[0] == "*vertices":
+                    nodes_remaining = int(row[1])
+                elif nodes_remaining > 0:
+                    graph[row[1][1:-1]] = {}
+                    name_index.append(row[1][1:-1])
+                    nodes_remaining -= 1
+                elif row[0] != "*arcs":
+                    graph[name_index[int(row[0])]][name_index[int(row[1])]] = int(row[2])
+        self.load_from_dict(graph)
+
+
+    def clean_generator(self, fhandler): yield (row.strip().lower().split() for row in fhandler)
+
     # ---------------------------------------------------------
     # verify if all passed nodes exists in graph
     def __valida_nodes(self, nodes):

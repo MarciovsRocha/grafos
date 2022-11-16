@@ -12,15 +12,18 @@ from  utils import *
 G = Grafo(directional=True)
 #G.create_scale_free(n_nodes=500, n_edges=3)
 #G.create_gaussian_distribution(n_nodes=10)
-meu_dict = load_json('dict_MOCK.json')
-G.laod_from_dict(meu_dict)
-print(G)
+#meu_dict = load_json('dict_MOCK.json')
+#G.load_from_dict(meu_dict)
 
-G.export_to_pajek()
+G.import_from_pajek("output.net")
+
+#G.export_to_pajek()
+
+print(G)
 
 graus = G.get_all_degrees(as_list=True)
 for obj in G.get_highest_nodes():
-    print(obj)
+   print(obj)
 
 plt.hist(graus, edgecolor='black', alpha=.4)
 plt.plot([np.mean(graus), np.mean(graus)], [0, 1500], r'--', label=f'Grau médio = {np.mean(graus)}')
