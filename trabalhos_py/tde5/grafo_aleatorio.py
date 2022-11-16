@@ -163,18 +163,18 @@ class Grafo:
         file = open(path, 'r')
         for data in self.clean_generator(file):
             for row in data:
-                if row[0] == "*vertices":
+                if row[0] == "*Vertices":
                     nodes_remaining = int(row[1])
                 elif nodes_remaining > 0:
                     graph[row[1][1:-1]] = {}
                     name_index.append(row[1][1:-1])
                     nodes_remaining -= 1
-                elif row[0] != "*arcs":
+                elif row[0] != "*Arcs":
                     graph[name_index[int(row[0])]][name_index[int(row[1])]] = int(row[2])
         self.load_from_dict(graph)
 
 
-    def clean_generator(self, fhandler): yield (row.strip().lower().split() for row in fhandler)
+    def clean_generator(self, fhandler): yield (row.strip().split() for row in fhandler)
 
     # ---------------------------------------------------------
     # verify if all passed nodes exists in graph
