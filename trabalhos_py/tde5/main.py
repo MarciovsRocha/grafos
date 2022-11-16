@@ -6,11 +6,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from grafo_aleatorio import Grafo
+from  utils import *
 
 
 G = Grafo(directional=True)
 #G.create_scale_free(n_nodes=500, n_edges=3)
-#G.create_gaussian_distribution(n_nodes=500)
+#G.create_gaussian_distribution(n_nodes=10)
+meu_dict = load_json('dict_MOCK.json')
+G.laod_from_dict(meu_dict)
 print(G)
 
 G.export_to_pajek()

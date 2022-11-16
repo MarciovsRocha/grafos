@@ -204,3 +204,39 @@ class Grafo:
                         if b_conn_prob > self.__connection_prob:
                             self.new_edge(A , B , new_weight())
         return self
+
+    # ---------------------------------------------------------
+    # create graph with gaussian distribution of edges
+    def load_from_dict(self, grafo: dict):
+        msg = 'Import dict not compatible with architecture.'
+        added_nodes = []  # [A, B]
+        added_edges = []  # (A, B)
+        try:
+            for A in grafo:
+                # verify structure
+                if type(grafo[A]) != dict:
+                    raise Exception(msg)
+                # verify if already exists
+                if A not in self.__adjacency_list:
+                    added_nodes.append(A)
+                    self.new_node(A)
+                for B in grafo[A]:
+                    # verify if already exists
+                    if B not in self.__adjacency_list:
+                        added_nodes.append(B)
+                        self.new_node(B)
+                    # verify structure
+                    if type(grafo[A][B]) != int:
+                        raise Exception(msg)
+                    self.new_edge(A , B , grafo[A][B])
+                    added_edges.append((A, B))
+        except Exception as e:
+            # rollback changes
+            for edge in added_edges:
+                self.__adjacency_list[edge[0]].pop(edge[1])
+            for node in added_nodes:
+                if node in self.__adjacency_list:
+                    self.__adjacency_list.pop(node)
+            raise e
+        return self
+
