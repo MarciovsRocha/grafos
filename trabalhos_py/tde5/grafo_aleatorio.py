@@ -241,3 +241,9 @@ class Grafo:
             raise e
         return self
 
+    # ---------------------------------------------------------
+    # returns number of componets of graph
+    # size + order (n_edges + n_nodes)
+    def get_componets(self):
+        return self.size + self.order
+
