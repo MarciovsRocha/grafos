@@ -4,6 +4,7 @@
 # description: simple python script
 # ----------------------------------------------------------
 from random import randint
+import json
 
 
 # ---------------------------------------------------------
@@ -41,3 +42,11 @@ def exists_nodes(verify_nodes: list, nodes_list: list):
     for node in verify_nodes:
         exists = exists and node in nodes_list
     return exists
+
+
+# -----------------------------------------------
+# carregar arquivo JSON para objeto DICT python
+def load_json(nome: str = ''):
+    with open(nome , 'r') as file:
+        python_dict = json.load(file)
+    return python_dict
