@@ -266,3 +266,40 @@ class Grafo:
     # size + order (n_edges + n_nodes)
     def get_components(self):
         return self.size + self.order
+
+    def get_graph_traspose(self):
+        transposed_graph = {index: {} for index in self.__adjacency_list}
+        for a in self.__adjacency_list:
+            for b in self.__adjacency_list[a]:
+                val = self.__adjacency_list[a][b]
+                transposed_graph[b][a] = val
+        return transposed_graph
+
+    def dfs_visit_finish(self, visited_nodes: list, finished_nodes: list, node,  graph):
+        visited_nodes.append(node)
+        for b in graph[node]:
+            if b not in visited_nodes:
+                visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, b, graph)
+        finished_nodes.append(node)
+        return visited_nodes, finished_nodes
+
+    def get_strongly_connected_components(self):
+        visited_nodes = []
+        finished_nodes = []
+        transpose_visited_nodes = {}
+        for a in self.__adjacency_list:
+            if a not in visited_nodes:
+                visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, a, self.__adjacency_list)
+        graph_transpose = self.get_graph_traspose()
+        cont = 0
+
+        print(visited_nodes)
+        print(finished_nodes)
+
+        #for a in graph_transpose:
+            #if a not in transpose_visited_nodes:
+                #transpose_visited_nodes, cont = self.dfs_visit_finish(visited_nodes, a, cont, self.__adjacency_list)
+
+
+
+
