@@ -206,7 +206,8 @@ class Grafo:
         return self
 
     # ---------------------------------------------------------
-    # create graph with gaussian distribution of edges
+    # loads data from dict python that has the same
+    # architecture that adjacency list
     def load_from_dict(self, grafo: dict):
         msg = 'Import dict not compatible with architecture.'
         added_nodes = []  # [A, B]
