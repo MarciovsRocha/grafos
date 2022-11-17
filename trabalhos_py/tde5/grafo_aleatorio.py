@@ -308,15 +308,25 @@ class Grafo:
     def get_strongly_connected_components(self):
         visited_nodes = []
         finished_nodes = []
+        scc = []
         transpose_visited_nodes = {}
         for a in self.__adjacency_list:
             if a not in visited_nodes:
                 visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, a, self.__adjacency_list)
-        graph_transpose = self.get_graph_traspose()
-        cont = 0
-
+        print(self.__adjacency_list)
         print(visited_nodes)
-        print(finished_nodes)
+        graph_transpose = self.get_graph_traspose()
+        finished_nodes = finished_nodes[::-1]
+        visited_nodes = []
+        order = []
+        finish = []
+        for a in finished_nodes:
+            if a not in visited_nodes:
+                order.append(a)
+                visited_nodes, finish = self.dfs_visit_finish(visited_nodes, finish, a, graph_transpose)
+        print(graph_transpose)
+        print(visited_nodes)
+        print(order)
 
         #for a in graph_transpose:
             #if a not in transpose_visited_nodes:
