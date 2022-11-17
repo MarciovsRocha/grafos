@@ -1,9 +1,9 @@
 # ---------------------------------------------------------
 # import section
-import pandas as pd
+#import pandas as pd
 from random import random
 from bst import BinarySearchTree, Node
-from pajek_tools import PajekWriter
+#from pajek_tools import PajekWriter
 from utils import *
 
 # ---------------------------------------------------------
@@ -43,10 +43,11 @@ class Grafo:
     # public attributes
     size: int
     order: int
+    VERBOSE: bool
 
     # ---------------------------------------------------------
     # constructor
-    def __init__(self , directional: bool = True, conn_prob: float = (2/3)):
+    def __init__(self , directional: bool = True, conn_prob: float = (2/3), verbose: bool = False):
         self.__directional = directional
         self.__adjacency_list = {}
         self.__connection_prob = conn_prob
@@ -55,6 +56,7 @@ class Grafo:
         self.__nodes_data = {}
         self.size = 0
         self.order = 0
+        self.VERBOSE = verbose
 
     # ---------------------------------------------------------
     # custom printable object
@@ -147,13 +149,13 @@ class Grafo:
                 if A != B:
                     data.append([A, B, self.__adjacency_list[A][B]])
 
-        df = pd.DataFrame(data, columns=["source", "target", "weight"])
-        writer = PajekWriter(df,
-                             directed=True,
-                             citing_colname="source",
-                             cited_colname="target",
-                             weighted=True)
-        writer.write("output.net")
+#        df = pd.DataFrame(data, columns=["source", "target", "weight"])
+#        writer = PajekWriter(df,
+#                             directed=True,
+#                             citing_colname="source",
+#                             cited_colname="target",
+#                             weighted=True)
+#        writer.write("output.net")
         return self
 
     def import_from_pajek(self, path):
@@ -191,10 +193,14 @@ class Grafo:
     # create graph with gaussian distribution of edges
     def create_gaussian_distribution(self, n_nodes : int):
         # creates initial nodes
+        if self.VERBOSE:
+            print(f'Criando nodes inicias.')
         while 0 < n_nodes:
             self.new_node()
             n_nodes -= 1
         # create initial edges
+        if self.VERBOSE:
+            print(f'Criando lista de adjacencias Gaussiana.')
         for A in self.__adjacency_list:
             for B in self.__adjacency_list:
                 if (A != B) and (random() > self.__connection_prob):
@@ -204,25 +210,34 @@ class Grafo:
     # ---------------------------------------------------------
     # create scale free graph
     def create_scale_free(self, n_nodes: int, n_edges: int):
-        initial_nodes = int(n_nodes / 3)
+        initial_nodes = int(n_nodes / 15)
         n_nodes = n_nodes-initial_nodes
         self.create_gaussian_distribution(n_nodes=initial_nodes)
         # this function will create a scale-free graph
         new_nodes = []
         # creates initial nodes
+        if self.VERBOSE:
+            print(f'Criando nodes inicias.')
         while n_nodes > len(new_nodes):
             new_nodes.append(new_name())
             self.new_node(new_nodes[len(new_nodes) - 1])
         # create k-edges for each new_node
+        if self.VERBOSE:
+            nodes = list(self.__adjacency_list.keys())
         for A in new_nodes:
+            if self.VERBOSE:                
+                print(f'Criando arestas para o node: #{(nodes.index(A)+1)} - {A}.')
             while n_edges > self.node_degree(A):
                 for B in self.__adjacency_list:
+                    if n_edges < self.node_degree(A):
+                        break
                     # (nodes not equal)(rand * B_degree > prob)
                     if A != B:
                         b_conn_prob = random() * min_max(MIN=self.__min_degree , MAX=self.__max_degree ,
                                                          x=self.node_degree(B))
                         if b_conn_prob > self.__connection_prob:
                             self.new_edge(A , B , new_weight())
+                            print(f'Criada aresta #{self.node_degree(A)} para o node: #{(nodes.index(A)+1)} - {A}.')
         return self
 
     # ---------------------------------------------------------
@@ -267,6 +282,8 @@ class Grafo:
     def get_components(self):
         return self.size + self.order
 
+    # ---------------------------------------------------------
+    # returns transpose graph
     def get_graph_traspose(self):
         transposed_graph = {index: {} for index in self.__adjacency_list}
         for a in self.__adjacency_list:
@@ -275,6 +292,8 @@ class Grafo:
                 transposed_graph[b][a] = val
         return transposed_graph
 
+    # ---------------------------------------------------------
+    # executes DFS and returns visited nodes and leafs
     def dfs_visit_finish(self, visited_nodes: list, finished_nodes: list, node,  graph):
         visited_nodes.append(node)
         for b in graph[node]:
@@ -283,6 +302,9 @@ class Grafo:
         finished_nodes.append(node)
         return visited_nodes, finished_nodes
 
+    # ---------------------------------------------------------
+    # returns sub-graphs that represents strongy connected nodes
+    # of original graph
     def get_strongly_connected_components(self):
         visited_nodes = []
         finished_nodes = []
@@ -300,6 +322,10 @@ class Grafo:
             #if a not in transpose_visited_nodes:
                 #transpose_visited_nodes, cont = self.dfs_visit_finish(visited_nodes, a, cont, self.__adjacency_list)
 
-
-
-
+    # ---------------------------------------------------------
+    # exports the graph to json file
+    def export_to_json(self, file_name: str = 'exported_graph.json'):
+        if '' != file_name:
+            with open(file_name, 'w') as file:
+                file.write(json.dumps(self.__adjacency_list, indent=4, ensure_ascii=True))
+            print(f'Grafo exportado para o arquivo: {file_name} com sucesso.')

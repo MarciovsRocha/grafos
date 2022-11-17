@@ -1,21 +1,19 @@
-#!/usr/bin/python3
-
 # ------------------------------------------------------------
 # created by: dev.marcio.rocha@gmail.com
 # ------------------------------------------------------------
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from grafo_aleatorio import Grafo
 from  utils import *
 
 
-G = Grafo(directional=True)
-#G.create_scale_free(n_nodes=500, n_edges=3)
+G = Grafo(directional=True, verbose=True)
+G.create_scale_free(n_nodes=10000, n_edges=3)
 #G.create_gaussian_distribution(n_nodes=10)
 #meu_dict = load_json('dict_MOCK.json')
 #G.load_from_dict(meu_dict)
-
-G.import_from_pajek("output.net")
+G.export_to_json('big_one_nodes.json')
+#G.import_from_pajek("output.net")
 
 #G.export_to_pajek()
 
@@ -32,4 +30,4 @@ G.import_from_pajek("output.net")
 #plt.legend()
 #plt.show()
 
-G.get_strongly_connected_components()
+#G.get_strongly_connected_components()
