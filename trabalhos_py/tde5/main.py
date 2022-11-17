@@ -8,11 +8,36 @@ from  utils import *
 
 
 G = Grafo(directional=True, verbose=True)
-G.create_scale_free(n_nodes=10000, n_edges=3)
+#G.create_scale_free(n_nodes=100, n_edges=3)
+exemplo_slide = {
+    'H': {
+        'G': 1,
+        'B': 1
+    },
+    'A': {
+        'B': 1,
+        'F': 1
+    },
+    'B': {
+        'G': 1,
+        'F': 1
+    },
+    'F': {
+        'C': 1,
+        'I': 1
+    },
+    'C': {},
+    'I': {},
+    'G': {
+        'I': 1
+    }
+}
+G.load_from_dict(exemplo_slide)
+G.get_dag()
 #G.create_gaussian_distribution(n_nodes=10)
 #meu_dict = load_json('dict_MOCK.json')
 #G.load_from_dict(meu_dict)
-G.export_to_json('big_one_nodes.json')
+#G.export_to_json('big_one_nodes.json')
 #G.import_from_pajek("output.net")
 
 #G.export_to_pajek()
