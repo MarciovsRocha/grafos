@@ -329,3 +329,21 @@ class Grafo:
             with open(file_name, 'w') as file:
                 file.write(json.dumps(self.__adjacency_list, indent=4, ensure_ascii=True))
             print(f'Grafo exportado para o arquivo: {file_name} com sucesso.')
+
+    # ---------------------------------------------------------
+    # exports the graph to json file
+    def get_dag(self):
+        DAG = {}
+        # realize DFS
+        visited_nodes = []
+        finished_nodes = []
+        for A in self.__adjacency_list:
+            if A not in visited_nodes:
+                visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, A, self.__adjacency_list)
+        # finished_nodes = stack topological_sort  backwards
+        for node in finished_nodes[::-1]:
+            DAG[node] = {}
+            for conn in self.__adjacency_list[node]:
+                if conn not in DAG:
+                    DAG[node][conn] = self.__adjacency_list[node][conn]
+        return DAG
