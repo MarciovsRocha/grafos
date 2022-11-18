@@ -40,7 +40,7 @@ G.get_dag()
 #G.export_to_json('big_one_nodes.json')
 #G.import_from_pajek("output.net")
 
-#G.export_to_pajek()
+G.export_to_pajek()
 
 #print(G)
 

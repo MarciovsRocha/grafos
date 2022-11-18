@@ -284,7 +284,7 @@ class Grafo:
 
     # ---------------------------------------------------------
     # returns transpose graph
-    def get_graph_traspose(self):
+    def get_graph_transpose(self):
         transposed_graph = {index: {} for index in self.__adjacency_list}
         for a in self.__adjacency_list:
             for b in self.__adjacency_list[a]:
@@ -308,19 +308,33 @@ class Grafo:
     def get_strongly_connected_components(self):
         visited_nodes = []
         finished_nodes = []
-        transpose_visited_nodes = {}
+        scc = []
+        order = []
+
         for a in self.__adjacency_list:
             if a not in visited_nodes:
-                visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, a, self.__adjacency_list)
-        graph_transpose = self.get_graph_traspose()
-        cont = 0
+                visited_nodes, finished_nodes = self.dfs_visit_finish(visited_nodes, finished_nodes, a,
+                                                                      self.__adjacency_list)
 
-        print(visited_nodes)
-        print(finished_nodes)
+        graph_transpose = self.get_graph_transpose()
+        finished_nodes = finished_nodes[::-1]
+        visited_nodes = []
+        finish = []
 
-        #for a in graph_transpose:
-            #if a not in transpose_visited_nodes:
-                #transpose_visited_nodes, cont = self.dfs_visit_finish(visited_nodes, a, cont, self.__adjacency_list)
+        for a in finished_nodes:
+            if a not in visited_nodes:
+                order.append(a)
+                visited_nodes, finish = self.dfs_visit_finish(visited_nodes, finish, a, graph_transpose)
+
+        cont = -1
+
+        for a in finished_nodes:
+            if a in order:
+                scc.append([])
+                cont += 1
+            scc[cont].append(a)
+
+        return {"num_scc": len(scc), "scc_list": scc}
 
     # ---------------------------------------------------------
     # exports the graph to json file
@@ -330,8 +344,7 @@ class Grafo:
                 file.write(json.dumps(self.__adjacency_list, indent=4, ensure_ascii=True))
             print(f'Grafo exportado para o arquivo: {file_name} com sucesso.')
 
-    # ---------------------------------------------------------
-    # exports the graph to json file
+
     def get_dag(self):
         DAG = {}
         # realize DFS
