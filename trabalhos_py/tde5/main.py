@@ -1,15 +1,13 @@
 # ------------------------------------------------------------
 # created by: dev.marcio.rocha@gmail.com
 # ------------------------------------------------------------
-import numpy as np
-import matplotlib.pyplot as plt
 from grafo_aleatorio import Grafo
 from utils import *
 
 # ------------------------------------------------------
 # some mocked data
 SIMPLE_MOCK = 'dict_MOCK.json'
-EXEMPLOS_SLIDE = 'exemplos_slide.json'
+EXEMPLOS_SLIDE = 'exemplo_slide.json'
 FIVE_HUNDRED_NODES = 'exported_graph_500_nodes.json'
 BIG_ONE = 'big_one_nodes.json'
 
@@ -46,5 +44,14 @@ I.import_from_pajek("output.net")
 # G.export_to_json(FIVE_HUNDRED_NODES)
 # G.import_from_pajek("output.net")
 # G.export_to_pajek()
-#G.degrees_histogram()
+# G.degrees_histogram()
 # G.get_strongly_connected_components()
+# lowest = G.lowest_paths_histogram()
+# for i in lowest:
+#     line = ''
+#     for j in lowest[i]:
+#         line += f'{lowest[i][j]:<8}'
+#     print(line)
+# G.get_central_node()
+# G.get_central_node_betweenness()
+G.convert_to_conex()
