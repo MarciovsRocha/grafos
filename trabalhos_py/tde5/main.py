@@ -25,12 +25,20 @@ def feed_graph(graph: Grafo, option: str, n_nodes: int = 500, n_edges: int = 3):
 
 
 G = Grafo(directional=False, verbose=True)
+H = Grafo(directional=False, verbose=True)
+I = Grafo()
+
 feed_graph(
     graph=G
-    , option='gaussian'
-    , n_nodes=100
-    , n_edges=3
+    , option=SIMPLE_MOCK
+#    , n_nodes=500
+#    , n_edges=None
 )
+
+
+H.load_from_dict(G.graph_to_tree())
+H.export_to_pajek()
+I.import_from_pajek("output.net")
 # G.get_dag()
 
 # G.export_to_json(FIVE_HUNDRED_NODES)
