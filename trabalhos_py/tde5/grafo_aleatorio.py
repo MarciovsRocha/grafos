@@ -1,9 +1,9 @@
 # ---------------------------------------------------------
 # import section
-#import pandas as pd
+import pandas as pd
 from random import random
 from bst import BinarySearchTree, Node
-#from pajek_tools import PajekWriter
+from pajek_tools import PajekWriter
 from utils import *
 
 # ---------------------------------------------------------
@@ -149,21 +149,23 @@ class Grafo:
                 if A != B:
                     data.append([A, B, self.__adjacency_list[A][B]])
 
-#        df = pd.DataFrame(data, columns=["source", "target", "weight"])
-#        writer = PajekWriter(df,
-#                             directed=True,
-#                             citing_colname="source",
-#                             cited_colname="target",
-#                             weighted=True)
-#        writer.write("output.net")
+        df = pd.DataFrame(data, columns=["source", "target", "weight"])
+        writer = PajekWriter(df,
+                             directed=True,
+                             citing_colname="source",
+                             cited_colname="target",
+                             weighted=True)
+        writer.write("output.net")
         return self
 
+    # ---------------------------------------------------------
+    # Import the graph from Pajek file format
     def import_from_pajek(self, path):
         graph = {}
         name_index = [0]
         nodes_remaining = -1
         file = open(path, 'r')
-        for data in self.clean_generator(file):
+        for data in clean_generator(file):
             for row in data:
                 if row[0] == "*Vertices":
                     nodes_remaining = int(row[1])
@@ -174,9 +176,6 @@ class Grafo:
                 elif row[0] != "*Arcs":
                     graph[name_index[int(row[0])]][name_index[int(row[1])]] = int(row[2])
         self.load_from_dict(graph)
-
-
-    def clean_generator(self, fhandler): yield (row.strip().split() for row in fhandler)
 
     # ---------------------------------------------------------
     # verify if all passed nodes exists in graph
