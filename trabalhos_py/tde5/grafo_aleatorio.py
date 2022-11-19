@@ -5,7 +5,7 @@ from random import random
 from bst import BinarySearchTree, Node
 from pajek_tools import PajekWriter
 from utils import *
-
+import random
 
 # ---------------------------------------------------------
 # graph class
@@ -143,9 +143,11 @@ class Grafo:
                 if A != B:
                     data.append([A, B, self.__adjacency_list[A][B]])
 
+
+
         df = pd.DataFrame(data, columns=["source", "target", "weight"])
         writer = PajekWriter(df,
-                             directed=True,
+                             directed=self.__directional,
                              citing_colname="source",
                              cited_colname="target",
                              weighted=True)
@@ -167,8 +169,13 @@ class Grafo:
                     graph[row[1][1:-1]] = {}
                     name_index.append(row[1][1:-1])
                     nodes_remaining -= 1
-                elif row[0] != "*Arcs":
+                elif row[0] == "*Arcs":
+                    self.__directional = True
+                elif row[0] == "*Edges":
+                    self.__directional = False
+                else:
                     graph[name_index[int(row[0])]][name_index[int(row[1])]] = int(row[2])
+                    graph[name_index[int(row[1])]][name_index[int(row[0])]] = int(row[2])
         self.load_from_dict(graph)
 
     # ---------------------------------------------------------
@@ -347,3 +354,24 @@ class Grafo:
             , y_label='Frequency'
         )
         return self
+
+    # ---------------------------------------------------------
+    # Returns a tree version of this graph
+    def graph_to_tree(self):
+        tree = {}
+        added = []
+        if self.__directional:
+            raise Exception(f'This method doesn\'t support directional graphs.')
+
+        root = random.choice(list(self.__adjacency_list))
+        tree[root] = {}
+        added.append(root)
+        for a in added:
+            for b in self.__adjacency_list[a]:
+                if b not in added:
+                    tree[a][b] = 1
+                    tree[b] = {}
+                    tree[b][a] = 1
+                    added.append(b)
+
+        return tree

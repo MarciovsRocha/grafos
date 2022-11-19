@@ -26,17 +26,25 @@ def feed_graph(graph: Grafo, option: str, n_nodes: int = 500, n_edges: int = 3):
     graph.load_from_dict(my_dict)
 
 
-G = Grafo(directional=True, verbose=True)
+G = Grafo(directional=False, verbose=True)
+H = Grafo(directional=False, verbose=True)
+I = Grafo()
+
 feed_graph(
     graph=G
-    , option=FIVE_HUNDRED_NODES
+    , option=SIMPLE_MOCK
 #    , n_nodes=500
 #    , n_edges=None
 )
+
+
+H.load_from_dict(G.graph_to_tree())
+H.export_to_pajek()
+I.import_from_pajek("output.net")
 # G.get_dag()
 
 # G.export_to_json(FIVE_HUNDRED_NODES)
 # G.import_from_pajek("output.net")
 # G.export_to_pajek()
-G.degrees_histogram()
+#G.degrees_histogram()
 # G.get_strongly_connected_components()
