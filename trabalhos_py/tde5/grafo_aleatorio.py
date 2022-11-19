@@ -6,12 +6,6 @@ from bst import BinarySearchTree, Node
 from pajek_tools import PajekWriter
 from utils import *
 
-# ---------------------------------------------------------
-# constants section
-
-MIN_NODES = 10000
-MIN_EDGES = 15000
-
 
 # ---------------------------------------------------------
 # graph class
@@ -243,36 +237,11 @@ class Grafo:
     # loads data from dict python that has the same
     # architecture that adjacency list
     def load_from_dict(self, grafo: dict):
-        msg = 'Import dict not compatible with architecture.'
-        added_nodes = []  # [A, B]
-        added_edges = []  # (A, B)
-        try:
-            for A in grafo:
-                # verify structure
-                if type(grafo[A]) != dict:
-                    raise Exception(msg)
-                # verify if already exists
-                if A not in self.__adjacency_list:
-                    added_nodes.append(A)
-                    self.new_node(A)
-                for B in grafo[A]:
-                    # verify if already exists
-                    if B not in self.__adjacency_list:
-                        added_nodes.append(B)
-                        self.new_node(B)
-                    # verify structure
-                    if type(grafo[A][B]) != int:
-                        raise Exception(msg)
-                    self.new_edge(A , B , grafo[A][B])
-                    added_edges.append((A, B))
-        except Exception as e:
-            # rollback changes
-            for edge in added_edges:
-                self.__adjacency_list[edge[0]].pop(edge[1])
-            for node in added_nodes:
-                if node in self.__adjacency_list:
-                    self.__adjacency_list.pop(node)
-            raise e
+        for node in grafo:
+            self.new_node(node)
+        for A in grafo:
+            for B in grafo[A]:
+                self.new_edge(A, B, grafo[A][B])
         return self
 
     # ---------------------------------------------------------
@@ -360,3 +329,21 @@ class Grafo:
                 if conn not in DAG:
                     DAG[node][conn] = self.__adjacency_list[node][conn]
         return DAG
+
+    # ---------------------------------------------------------
+    # shows graph nodes degrees distribution histogram
+    def degrees_histogram(self):
+        graus = self.get_all_degrees(as_list=True)
+        mean_value = mean(graus)  # mean function from utils
+        y_min = 0
+        y_max = graus.count(mode(graus)[0])*5
+        new_histogram(
+            data_distribution=graus
+            , show_mean_indicator=True
+            , mean_value=mean_value
+            , y_min=y_min
+            , y_max=y_max
+            , x_label='Degrees'
+            , y_label='Frequency'
+        )
+        return self
