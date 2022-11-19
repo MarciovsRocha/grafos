@@ -102,3 +102,14 @@ def mode(values: list = []):
 # function that computes mean value from list
 def mean(values: list = []):
     return np.mean(values)
+
+
+# -----------------------------------------------------------
+# iter over dicts from list summing all values from dict keys
+# return: int
+def sum_list_dicts(some_list: list):
+    s = 0
+    for element in some_list:
+        for key in element:
+            s += element[key]
+    return s
