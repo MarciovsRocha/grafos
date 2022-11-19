@@ -50,3 +50,11 @@ def load_json(nome: str = ''):
     with open(nome , 'r') as file:
         python_dict = json.load(file)
     return python_dict
+
+
+# -----------------------------------------------
+# generator for specified file_handler
+# that returns clean string
+def clean_generator(self, file_handler):
+    yield (row.strip().split() for row in file_handler)
+
