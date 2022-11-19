@@ -344,7 +344,8 @@ class Grafo:
                 file.write(json.dumps(self.__adjacency_list, indent=4, ensure_ascii=True))
             print(f'Grafo exportado para o arquivo: {file_name} com sucesso.')
 
-
+    # ---------------------------------------------------------
+    # returns DAG from actual graph
     def get_dag(self):
         DAG = {}
         # realize DFS
