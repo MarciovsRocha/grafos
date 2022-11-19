@@ -29,14 +29,20 @@ def feed_graph(graph: Grafo, option: str, n_nodes: int = 500, n_edges: int = 3):
 G = Grafo(directional=True, verbose=True)
 feed_graph(
     graph=G
-    , option=FIVE_HUNDRED_NODES
-#    , n_nodes=500
-#    , n_edges=None
+    , option='scale_free'
+    , n_nodes=500
+    , n_edges=3
 )
 # G.get_dag()
 
 # G.export_to_json(FIVE_HUNDRED_NODES)
 # G.import_from_pajek("output.net")
 # G.export_to_pajek()
-G.degrees_histogram()
+# G.degrees_histogram()
 # G.get_strongly_connected_components()
+lowest = G.lowest_paths_histogram()
+for i in lowest:
+    line = ''
+    for j in lowest[i]:
+        line += f'{lowest[i][j]:<8}'
+    print(line)
