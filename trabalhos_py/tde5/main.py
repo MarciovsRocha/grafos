@@ -27,7 +27,7 @@ def feed_graph(graph: Grafo, option: str, n_nodes: int = 500, n_edges: int = 3):
 G = Grafo(directional=True, verbose=True)
 feed_graph(
     graph=G
-    , option=EXEMPLOS_SLIDE
+    , option=SIMPLE_MOCK
     , n_nodes=500
     , n_edges=3
 )
@@ -44,4 +44,5 @@ feed_graph(
 #     for j in lowest[i]:
 #         line += f'{lowest[i][j]:<8}'
 #     print(line)
-G.get_central_node()
+# G.get_central_node()
+G.get_central_node_betweenness()
