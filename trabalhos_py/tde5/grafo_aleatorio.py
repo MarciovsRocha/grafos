@@ -217,6 +217,8 @@ class Grafo:
         # create k-edges for each new_node
         if self.VERBOSE:
             nodes = list(self.__adjacency_list.keys())
+        else:
+            nodes = []
         for A in new_nodes:
             if self.VERBOSE:                
                 print(f'Criando arestas para o node: #{(nodes.index(A)+1)} - {A}.')
@@ -271,7 +273,7 @@ class Grafo:
         return visited_nodes, finished_nodes
 
     # ---------------------------------------------------------
-    # returns sub-graphs that represents strongy connected nodes
+    # returns sub-graphs that represents strongly connected nodes
     # of original graph
     def get_strongly_connected_components(self):
         visited_nodes = []
