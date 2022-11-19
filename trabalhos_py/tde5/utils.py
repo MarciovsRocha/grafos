@@ -5,6 +5,8 @@
 # ----------------------------------------------------------
 from random import randint
 import json
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # ---------------------------------------------------------
@@ -53,8 +55,50 @@ def load_json(nome: str = ''):
 
 
 # -----------------------------------------------
-# generator for specified file_handler
+# function to create a generator
 # that returns clean string
-def clean_generator(self, file_handler):
+def clean_generator(file_handler):
     yield (row.strip().split() for row in file_handler)
 
+
+# -----------------------------------------------
+# function that creates a histogram
+# of passed data
+def new_histogram(
+        data_distribution
+        , show_mean_indicator: bool
+        , mean_value  # only if show_mean_indicator its true
+        , y_min  # only if show_mean_indicator its true
+        , y_max  # only if show_mean_indicator its true
+        , x_label: str
+        , y_label: str
+):
+    plt.hist(data_distribution , edgecolor='black' , alpha=.4)
+    if show_mean_indicator:
+        # this prints mean marker
+        plt.plot([mean_value, mean_value] , [y_min , y_max] , r'--' , label=f'Mean = {mean_value}')
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.show()
+
+
+# -----------------------------------------------
+# function that computes mode from list
+def mode(values: list = []):
+    # (value, value_freq)
+    item = (None, -1)
+    verified_values = []
+    for value in values:
+        if value not in verified_values:
+            verified_values.append(value)
+            value_freq = values.count(value)
+            if value_freq > item[1]:
+                item = (value, value_freq)
+    return item
+
+
+# -----------------------------------------------
+# function that computes mean value from list
+def mean(values: list = []):
+    return np.mean(values)
