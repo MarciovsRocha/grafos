@@ -24,11 +24,11 @@ def feed_graph(graph: Grafo, option: str, n_nodes: int = 500, n_edges: int = 3):
     graph.load_from_dict(my_dict)
 
 
-G = Grafo(directional=True, verbose=True)
+G = Grafo(directional=False, verbose=True)
 feed_graph(
     graph=G
-    , option=SIMPLE_MOCK
-    , n_nodes=500
+    , option='gaussian'
+    , n_nodes=100
     , n_edges=3
 )
 # G.get_dag()
@@ -45,4 +45,5 @@ feed_graph(
 #         line += f'{lowest[i][j]:<8}'
 #     print(line)
 # G.get_central_node()
-G.get_central_node_betweenness()
+# G.get_central_node_betweenness()
+G.convert_to_conex()
