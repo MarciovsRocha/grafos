@@ -397,3 +397,34 @@ class Grafo:
                     if dist[i][j] > dist[i][k] + dist[k][j]:
                         dist[i][j] = dist[i][k] + dist[k][j]
         return dist
+
+    # -----------------------------------------------------------
+    # computes the closeness centrality of informed node
+    def __closeness_centrality(self, A):
+        visited_nodes = [A]
+        jumps = {
+            '1': [node for node in self.__adjacency_list[A]]
+        }
+        index = 1
+        while (self.order > len(visited_nodes)) and (0 < len(jumps[str(index)])):
+            jumps[str(index + 1)] = []
+            for current_node in jumps[str(index)]:
+                if current_node not in visited_nodes:
+                    visited_nodes.append(current_node)
+                    for next_nodes in self.__adjacency_list[current_node]:
+                        if next_nodes not in visited_nodes:
+                            jumps[str(index + 1)].append(next_nodes)
+            index += 1
+        centrality = 0
+        for index in jumps:
+            centrality += int(index) * len(jumps[index])
+        centrality = 1 if 0 == centrality else centrality
+        return (self.order - 1) / centrality
+
+    # -----------------------------------------------------------
+    # computes the closeness centrality of informed node
+    def get_central_node(self):
+        nodes = [node for node in self.__adjacency_list]
+        centrality = [self.__closeness_centrality(node) for node in nodes]
+        central_node = nodes[centrality.index(min(centrality))]
+        return central_node
