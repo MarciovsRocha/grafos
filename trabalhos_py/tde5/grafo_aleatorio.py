@@ -378,8 +378,7 @@ class Grafo:
         return lowest_paths
 
     # -----------------------------------------------------------
-    # returns lowest path between two nodes
-    # return: [{node: accumulated_cost}]
+    # returns lowest path between all nodes
     def __floyd_warshal(self):
         dist = {}
         for A in self.__adjacency_list:
@@ -423,8 +422,76 @@ class Grafo:
 
     # -----------------------------------------------------------
     # computes the closeness centrality of informed node
+    # by closeness centrality
     def get_central_node(self):
         nodes = [node for node in self.__adjacency_list]
         centrality = [self.__closeness_centrality(node) for node in nodes]
         central_node = nodes[centrality.index(min(centrality))]
+        return central_node
+
+    # -----------------------------------------------------------
+    # returns lowest path between two nodes
+    # return: [{node: accumulated_cost}]
+    def __dijkstra(self , source_node: str , target_node: str):
+        if (source_node not in self.__adjacency_list) or (target_node not in self.__adjacency_list):
+            print(
+                'Não é possível verificar o menor caminho entre os vértices \'{}\' e \'{}\' pois um destes vértices não pertence ao grafo.'.format(
+                    source_node , target_node))
+            return -1
+        current_node = source_node
+        visited_nodes = [current_node]
+        cost = [{str(current_node): 0}]
+        while len(self.__adjacency_list) > len(visited_nodes):
+            minor_child = None  # aux variable to determine the child with the lowest cost from current_node
+            # iterate over adjacency list of current_node to find the lowest accumulated cost over child
+            for node in self.__adjacency_list[current_node]:
+                # if the child node is the target node compute the accumulated cost to him and
+                # add into cost list and return the cost list
+                if target_node == node:
+                    cost.append({str(node): int(sum_list_dicts(cost) + self.__adjacency_list[current_node][node])})
+                    return cost
+                # if the child node is a non-visited node compute the accumulated cost to him
+                # and adds him to the visited_nodes list
+                if node not in visited_nodes:
+                    visited_nodes.append(node)
+                    acc_cost = sum_list_dicts(cost) + self.__adjacency_list[current_node][node]
+                    # sets the minor child if its equals to None
+                    if minor_child is None:
+                        minor_child = (node , acc_cost)
+                    else:  # update the minor child with the computed cost if its lower
+                        minor_child = (node , acc_cost) if minor_child[1] < acc_cost else minor_child
+            # with the minor_child selected, insert him into cost list
+            # sets him as current_node
+            if minor_child is not None:
+                cost.append({str(minor_child[0]): int(minor_child[1])})
+                current_node = minor_child[0]
+            else:
+                return -1
+        print('The target node ({}) cannot be reachable from source node ({})'.format(target_node , source_node))
+        return -1  # error, target node not reachable from source node
+
+    # -----------------------------------------------------------
+    # computes the betweenness centrality of informed node
+    def __betweenness_centrality(self, A):
+        shortest_paths = []
+        for node_A in self.__adjacency_list:
+            for node_B in self.__adjacency_list:
+                if (node_A != node_B) and (A != node_A) and (A != node_B):
+                    shortest_paths.append(self.__dijkstra(node_A, node_B))
+        shortest_paths_with_A = 0
+        shortest_paths = [path for path in shortest_paths if path != -1]
+        for path in shortest_paths:
+            for step in path:
+                if A in step:
+                    shortest_paths_with_A += 1
+                    break
+        return (shortest_paths_with_A / len(shortest_paths)) if shortest_paths_with_A > 0 else 0
+
+    # -----------------------------------------------------------
+    # computes the closeness centrality of informed node
+    # betweenness centrality
+    def get_central_node_betweenness(self):
+        nodes = [node for node in self.__adjacency_list]
+        centrality = [self.__betweenness_centrality(node) for node in nodes]
+        central_node = nodes[centrality.index(max(centrality))]
         return central_node
