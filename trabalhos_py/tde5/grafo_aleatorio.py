@@ -1,5 +1,6 @@
 # ---------------------------------------------------------
 # import section
+import numpy as np
 import pandas as pd
 from random import random
 from bst import BinarySearchTree, Node
@@ -349,3 +350,50 @@ class Grafo:
             , y_label='Frequency'
         )
         return self
+
+    # ---------------------------------------------------------
+    # computes lowest paths between all nodes and shows histogram
+    def lowest_paths_histogram(self):
+        lowest_paths = self.__floyd_warshal()
+        lowest_paths_list = []
+        for A in lowest_paths:
+            for B in lowest_paths[A]:
+                if np.inf != lowest_paths[A][B]:
+                    lowest_paths_list.append(lowest_paths[A][B])
+                else:
+                    lowest_paths_list.append(np.nan)
+        lowest_paths_list = [i for i in lowest_paths_list if not np.isnan(i)]
+        mean_value = mean(lowest_paths_list)
+        y_min = 0
+        y_max = lowest_paths_list.count(mode(lowest_paths_list)[0])*7
+        new_histogram(
+            data_distribution=lowest_paths_list
+            , show_mean_indicator=True
+            , mean_value=mean_value
+            , y_min=y_min
+            , y_max=y_max
+            , x_label='Cost of lowest paths'
+            , y_label='Frequency'
+        )
+        return lowest_paths
+
+    # -----------------------------------------------------------
+    # returns lowest path between two nodes
+    # return: [{node: accumulated_cost}]
+    def __floyd_warshal(self):
+        dist = {}
+        for A in self.__adjacency_list:
+            dist[A] = {}
+            for B in self.__adjacency_list:
+                if A == B:
+                    dist[A][B] = 0
+                elif B in self.__adjacency_list[A]:
+                    dist[A][B] = self.__adjacency_list[A][B]
+                else:
+                    dist[A][B] = np.inf
+        for k in self.__adjacency_list:
+            for i in self.__adjacency_list:
+                for j in self.__adjacency_list:
+                    if dist[i][j] > dist[i][k] + dist[k][j]:
+                        dist[i][j] = dist[i][k] + dist[k][j]
+        return dist
