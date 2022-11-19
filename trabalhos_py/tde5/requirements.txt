@@ -1,3 +1,4 @@
 pajek_tools
 pandas
 matplotlib
+numpy
