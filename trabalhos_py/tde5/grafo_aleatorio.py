@@ -495,3 +495,31 @@ class Grafo:
         centrality = [self.__betweenness_centrality(node) for node in nodes]
         central_node = nodes[centrality.index(max(centrality))]
         return central_node
+
+    # -----------------------------------------------------------
+    # computes the closeness centrality of informed node
+    # betweenness centrality
+    def __is_conex(self):
+        connex = True
+        non_reachable_nodes = (None, None)
+        for A in self.__adjacency_list:
+            if not connex:
+                break
+            for B in self.__adjacency_list:
+                if A != B:
+                    if -1 == self.__dijkstra(A, B):
+                        connex = False
+                        non_reachable_nodes = (A, B)
+                        break
+        return connex, non_reachable_nodes
+
+    # -----------------------------------------------------------
+    # transforms non directed graph to conex
+    # betweenness centrality
+    def convert_to_conex(self):
+        if not self.__directional:
+            is_conex, non_reachable_nodes = self.__is_conex()
+            while not is_conex:
+                self.new_edge(non_reachable_nodes[0], non_reachable_nodes[1], new_weight())
+                is_conex , non_reachable_nodes = self.__is_conex()
+        return self
